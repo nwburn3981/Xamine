@@ -1,0 +1,13 @@
+package non.zibatomaso.xamine;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class XamineApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(XamineApplication.class, args);
+	}
+
+}
