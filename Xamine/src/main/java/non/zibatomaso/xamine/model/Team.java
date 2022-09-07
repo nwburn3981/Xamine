@@ -11,45 +11,42 @@ import javax.persistence.Id;
 import javax.persistence.Transient;
 
 @Entity
-public class Team implements Serializable{
+public class Team implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
-	@Id
+
+	@Id // One-to-Many Employees
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	@Transient
-	private Doctor doctor;
+	private Employee doctor;
 	@Column
-	private String doctorName;
-	
+	private Long doctor_id;
+
 	@Transient
-	private Radiologist radiologist;
+	private Employee radiologist;
 	@Column
-	private String radioName;
-	
+	private Long radio_id;
+
 	@Transient
-	private ArrayList<Technician> techs = new ArrayList<>();
-	@Transient
-	private ArrayList<Patient> patients = new ArrayList<>();
+	private ArrayList<Employee> techs = new ArrayList<>();
+
 	@Transient
 	private ArrayList<Order> orders = new ArrayList<>();
-	
+
 	public Team() {
-		this(new Doctor(), new Radiologist(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+		this(new Employee(), new Employee(), new ArrayList<>(), new ArrayList<>());
 		this.id = -1L;
 	}
 
-	public Team(Doctor doctor, Radiologist radiologist, ArrayList<Technician> techs, ArrayList<Patient> patients,
-			ArrayList<Order> orders) {
-		super();
+	public Team(Employee doctor, Employee radiologist, ArrayList<Employee> techs, ArrayList<Order> orders) {
+		this.id = -1L;
 		this.doctor = doctor;
-		this.doctorName = doctor.getLastName();
+		this.doctor_id = doctor.getId();
 		this.radiologist = radiologist;
-		this.radioName = radiologist.getLastName(); 
+		this.radio_id = radiologist.getId();
 		this.techs = techs;
-		this.patients = patients;
 		this.orders = orders;
 	}
 
@@ -57,56 +54,44 @@ public class Team implements Serializable{
 		return id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Doctor getDoctor() {
+	public Employee getDoctor() {
 		return doctor;
 	}
 
-	public void setDoctor(Doctor doctor) {
+	public void setDoctor(Employee doctor) {
 		this.doctor = doctor;
 	}
 
-	public String getDoctorName() {
-		return doctorName;
+	public Long getDoctorId() {
+		return doctor_id;
 	}
 
-	public void setDoctorName(String doctorName) {
-		this.doctorName = doctorName;
+	public void setDoctorId(Long doctorId) {
+		this.doctor_id = doctorId;
 	}
 
-	public Radiologist getRadiologist() {
+	public Employee getRadiologist() {
 		return radiologist;
 	}
 
-	public void setRadiologist(Radiologist radiologist) {
+	public void setRadiologist(Employee radiologist) {
 		this.radiologist = radiologist;
 	}
 
-	public String getRadioName() {
-		return radioName;
+	public Long getRadioId() {
+		return radio_id;
 	}
 
-	public void setRadioName(String radioName) {
-		this.radioName = radioName;
+	public void setRadioId(Long radioId) {
+		this.radio_id = radioId;
 	}
 
-	public ArrayList<Technician> getTechs() {
+	public ArrayList<Employee> getTechs() {
 		return techs;
 	}
 
-	public void setTechs(ArrayList<Technician> techs) {
+	public void setTechs(ArrayList<Employee> techs) {
 		this.techs = techs;
-	}
-
-	public ArrayList<Patient> getPatients() {
-		return patients;
-	}
-
-	public void setPatients(ArrayList<Patient> patients) {
-		this.patients = patients;
 	}
 
 	public ArrayList<Order> getOrders() {
@@ -119,11 +104,8 @@ public class Team implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Team [id=" + id + ", doctor=" + doctor + ", doctorName=" + doctorName + ", radiologist=" + radiologist
-				+ ", radioName=" + radioName + ", techs=" + techs + ", patients=" + patients + ", orders=" + orders
-				+ "]";
+		return "Team [id=" + id + ", doctor=" + doctor + ", doctor_id=" + doctor_id + ", radiologist=" + radiologist
+				+ ", radio_id=" + radio_id + ", techs=" + techs + ", orders=" + orders + "]";
 	}
-	
-	
 
 }

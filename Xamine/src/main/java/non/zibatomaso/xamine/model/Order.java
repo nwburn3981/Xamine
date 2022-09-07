@@ -1,10 +1,8 @@
 package non.zibatomaso.xamine.model;
 
-import java.io.File;
 import java.io.Serializable;
 import java.security.Timestamp;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -64,13 +62,8 @@ public class Order implements Serializable {
 	@Transient
 	private Patient patient;
 	@Column
-	@NotNull
+	@NotNull // One-to-One Patient
 	private Long patientId;
-
-	@Transient
-	private Team team;
-	@Column
-	private Long teamId;
 
 	@Column(name = "Order_Status")
 	@Enumerated(EnumType.STRING)
@@ -80,17 +73,9 @@ public class Order implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private Procedure procedure;
 
-	@Transient
-	private ArrayList<ImageFile> images = new ArrayList<>();
-
-	@Column
-	private File report;
-	@Column
-	private String reportId;
-
 	public Order(String apptRoom, String apptTeam, String radioAnalysis, @NotNull String visitReason, String apptTime,
-			boolean apptScheduled, boolean patientCheckedIn, Patient patient, @NotNull Long patientId, Team team,
-			Long teamId, Procedure procedure) {
+			boolean apptScheduled, boolean patientCheckedIn, Patient patient, @NotNull Long patientId,
+			Procedure procedure) {
 
 		this.id = -1L;
 		this.apptRoom = apptRoom;
@@ -104,18 +89,12 @@ public class Order implements Serializable {
 		this.patientCheckedIn = patientCheckedIn;
 		this.patient = patient;
 		this.patientId = patient.getId();
-		this.team = team;
-		this.teamId = this.getId();
 		this.status = Status.OPEN;
 		this.procedure = procedure;
 	}
 
 	public Long getId() {
 		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getApptRoom() {
@@ -222,30 +201,6 @@ public class Order implements Serializable {
 		this.patientId = patientId;
 	}
 
-	public Team getTeam() {
-		return team;
-	}
-
-	public void setTeam(Team team) {
-		this.team = team;
-	}
-
-	public Long getTeamId() {
-		return teamId;
-	}
-
-	public void setTeamId(Long teamId) {
-		this.teamId = teamId;
-	}
-
-	public ArrayList<ImageFile> getImages() {
-		return images;
-	}
-
-	public void setImages(ArrayList<ImageFile> images) {
-		this.images = images;
-	}
-
 	public Status getStatus() {
 		return status;
 	}
@@ -262,31 +217,15 @@ public class Order implements Serializable {
 		this.procedure = procedure;
 	}
 
-	public File getReport() {
-		return report;
-	}
-
-	public void setReport(File report) {
-		this.report = report;
-	}
-
-	public String getReportId() {
-		return reportId;
-	}
-
-	public void setReportId(String reportId) {
-		this.reportId = reportId;
-	}
-
 	@Override
 	public String toString() {
 		return "Order [id=" + id + ", apptRoom=" + apptRoom + ", apptTeam=" + apptTeam + ", radioAnalysis="
 				+ radioAnalysis + ", visitReason=" + visitReason + ", apptTime=" + apptTime + ", timestamp=" + timestamp
 				+ ", apptDay=" + apptDay + ", lastModified=" + lastModified + ", dateCreated=" + dateCreated
 				+ ", apptScheduled=" + apptScheduled + ", patientCheckedIn=" + patientCheckedIn + ", patient=" + patient
-				+ ", patientId=" + patientId + ", team=" + team + ", teamId=" + teamId + ", status=" + status
-				+ ", procedure=" + procedure + ", images=" + images + ", report=" + report + ", reportId=" + reportId
-				+ "]";
+				+ ", patientId=" + patientId + ", status=" + status + ", procedure=" + procedure + "]";
 	}
+	
+	
 
 }

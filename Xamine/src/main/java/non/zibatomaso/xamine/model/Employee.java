@@ -6,18 +6,25 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import non.zibatomaso.xamine.model.Employee.Title;
-
-
 @Entity
-public class Patient implements Serializable {
+public class Employee implements Serializable {
 
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	private Long id;
+	public static enum Title {
+		DOCTOR, RECEPTIONIST, RADIOLOGIST, TECHNICIAN, PATIENT
+	}
+
+	@Id // One-to-Many Team
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	public Long id;
 
 	@Column(nullable = false)
 	private String firstName;
@@ -30,29 +37,28 @@ public class Patient implements Serializable {
 	@Column
 	private String phoneNumber;
 
-	@Column(nullable = false)
+	@Column()
 	@Enumerated(EnumType.STRING)
 	private Title title;
-	
-	@Column //One-to-One relationship, user
+
+	@Column // One-to-One relationship, user
 	private Long user_id;
 
-	public Patient() {
-		this("", "", "", "");
+	public Employee() {
+		this("", "", "", "", Title.RECEPTIONIST, 0L);
 		this.id = -1L;
-		this.title = Title.PATIENT;
 	}
 
-	public Patient(String firstName, String lastName, String email, String phoneNumber) {
+	public Employee(String firstName, String lastName, String email, String phoneNumber, Title title, Long user_id) {
+		super();
 		this.id = -1L;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
-		this.title = Title.PATIENT;
+		this.title = title;
+		this.user_id = user_id;
 	}
-	
-	
 
 	public Long getId() {
 		return id;
@@ -108,8 +114,8 @@ public class Patient implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Patient [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-				+ ", phoneNumber=" + phoneNumber + ", title=" + title + "]";
+		return "Employee [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
+				+ ", phoneNumber=" + phoneNumber + ", title=" + title + ", user_id=" + user_id + "]";
 	}
 
 }
