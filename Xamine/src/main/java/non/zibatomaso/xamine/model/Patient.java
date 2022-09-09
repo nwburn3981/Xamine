@@ -2,14 +2,16 @@ package non.zibatomaso.xamine.model;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 import non.zibatomaso.xamine.model.Employee.Title;
-
 
 @Entity
 public class Patient implements Serializable {
@@ -33,26 +35,26 @@ public class Patient implements Serializable {
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Title title;
-	
-	@Column //One-to-One relationship, user
-	private Long user_id;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(unique = true)
+	private User user;
 
 	public Patient() {
-		this("", "", "", "");
+		this("", "", "", "", new User());
 		this.id = -1L;
 		this.title = Title.PATIENT;
 	}
 
-	public Patient(String firstName, String lastName, String email, String phoneNumber) {
+	public Patient(String firstName, String lastName, String email, String phoneNumber, User user) {
 		this.id = -1L;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
+		this.user = user;
 		this.title = Title.PATIENT;
 	}
-	
-	
 
 	public Long getId() {
 		return id;
@@ -98,18 +100,18 @@ public class Patient implements Serializable {
 		this.title = title;
 	}
 
-	public Long getUser_id() {
-		return user_id;
+	public User getUser() {
+		return user;
 	}
 
-	public void setUser_id(Long user_id) {
-		this.user_id = user_id;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override
 	public String toString() {
 		return "Patient [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-				+ ", phoneNumber=" + phoneNumber + ", title=" + title + "]";
+				+ ", phoneNumber=" + phoneNumber + ", title=" + title + ", user=" + user + "]";
 	}
 
 }

@@ -9,6 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 //ToDo
 //OneToOne Relationships
@@ -38,6 +39,12 @@ public class User implements Serializable {
 
 	@Column
 	private boolean isActive;
+
+	@OneToOne(mappedBy = "user")
+	private Patient patient;
+
+	@OneToOne(mappedBy = "user")
+	private Employee employee;
 
 	public User() {
 
@@ -93,10 +100,26 @@ public class User implements Serializable {
 		this.isActive = isActive;
 	}
 
+	public Patient getPatient() {
+		return patient;
+	}
+
+	public void setPatient(Patient patient) {
+		this.patient = patient;
+	}
+
+	public Employee getEmployee() {
+		return employee;
+	}
+
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
+	}
+
 	@Override
 	public String toString() {
-		return "User [ID=" + id + ", password=" + password + ", username=" + username + ", role=" + role + ", isActive="
-				+ isActive + "]";
+		return "User [id=" + id + ", password=" + password + ", username=" + username + ", role=" + role + ", isActive="
+				+ isActive + ", patient=" + patient + ", employee=" + employee + "]";
 	}
 
 }

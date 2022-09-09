@@ -2,6 +2,7 @@ package non.zibatomaso.xamine.model;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -9,6 +10,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Employee implements Serializable {
@@ -41,15 +44,16 @@ public class Employee implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private Title title;
 
-	@Column // One-to-One relationship, user
-	private Long user_id;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(unique = true)
+	private User user;
 
 	public Employee() {
-		this("", "", "", "", Title.RECEPTIONIST, 0L);
+		this("", "", "", "", Title.RECEPTIONIST, new User());
 		this.id = -1L;
 	}
 
-	public Employee(String firstName, String lastName, String email, String phoneNumber, Title title, Long user_id) {
+	public Employee(String firstName, String lastName, String email, String phoneNumber, Title title, User user) {
 		super();
 		this.id = -1L;
 		this.firstName = firstName;
@@ -57,7 +61,7 @@ public class Employee implements Serializable {
 		this.email = email;
 		this.phoneNumber = phoneNumber;
 		this.title = title;
-		this.user_id = user_id;
+		this.user = user;
 	}
 
 	public Long getId() {
@@ -104,18 +108,18 @@ public class Employee implements Serializable {
 		this.title = title;
 	}
 
-	public Long getUser_id() {
-		return user_id;
+	public User getUser() {
+		return user;
 	}
 
-	public void setUser_id(Long user_id) {
-		this.user_id = user_id;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override
 	public String toString() {
 		return "Employee [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-				+ ", phoneNumber=" + phoneNumber + ", title=" + title + ", user_id=" + user_id + "]";
+				+ ", phoneNumber=" + phoneNumber + ", title=" + title + ", user=" + user + "]";
 	}
 
 }
